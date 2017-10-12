@@ -92,6 +92,28 @@ func TestAttributeRef(t *testing.T) {
 	}
 }
 
+func TestSimpleTypeList(t *testing.T) {
+	g, err := NewGoWSDL("fixtures/test.wsdl", "myservice", false, true)
+	if err != nil {
+		t.Error(err)
+	}
+
+	resp, err := g.Start()
+	if err != nil {
+		t.Fatal(err)
+	}
+	actual, err := getTypeDeclaration(resp, "ValueList")
+	if err != nil {
+		fmt.Println(string(resp["types"]))
+		t.Fatal(err)
+	}
+
+	expected := `type ValueList []int32`
+	if actual != expected {
+		t.Error("got `" + actual + "` want `" + expected + "`")
+	}
+}
+
 func TestVboxGeneratesWithoutSyntaxErrors(t *testing.T) {
 	files, err := filepath.Glob("fixtures/*.wsdl")
 	if err != nil {
@@ -166,7 +188,8 @@ func TestEnumerationsGeneratedCorrectly(t *testing.T) {
 }
 
 func getTypeDeclaration(resp map[string][]byte, name string) (string, error) {
-	source, err := format.Source([]byte(string(resp["header"]) + string(resp["types"])))
+	src := string(resp["header"]) + string(resp["types"])
+	source, err := format.Source([]byte(src))
 	if err != nil {
 		return "", err
 	}

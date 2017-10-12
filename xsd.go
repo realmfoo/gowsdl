@@ -199,12 +199,15 @@ type XSDAttribute struct {
 // XSDSimpleType element defines a simple type and specifies the constraints
 // and information about the values of attributes or text-only elements.
 type XSDSimpleType struct {
-	Name        string         `xml:"name,attr"`
-	Doc         string         `xml:"annotation>documentation"`
-	Restriction XSDRestriction `xml:"restriction"`
-	List        XSDList        `xml:"list"`
-	Union       XSDUnion       `xml:"union"`
-	Final       string         `xml:"final"`
+	Name        string          `xml:"name,attr"`
+	Doc         string          `xml:"annotation>documentation"`
+	Restriction *XSDRestriction `xml:"restriction"`
+	List        *XSDList        `xml:"list"`
+	Union       *XSDUnion       `xml:"union"`
+	Final       string          `xml:"final"`
+
+	// Go type
+	GoType string `xml:"-"`
 }
 
 // XSDList represents a element list

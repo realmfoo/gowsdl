@@ -8,8 +8,8 @@ var typesTmpl = `
 {{define "SimpleType"}}
 	{{$type := replaceReservedWords .Name | makePublic}}
 	{{if .Doc}} {{.Doc | comment}} {{end}}
-	type {{$type}} {{toGoType .Restriction.Base}}
-	{{if .Restriction.Enumeration}}
+	type {{$type}} {{ .GoType }}
+	{{if .Restriction }}
 	const (
 		{{with .Restriction}}
 			{{range .Enumeration}}
@@ -67,7 +67,7 @@ var typesTmpl = `
 		{{if not .Type}}
 			{{if .SimpleType}}
 				{{if .Doc}} {{.Doc | comment}} {{end}}
-				{{ .Name | makeFieldPublic}} {{toGoType .SimpleType.Restriction.Base}} ` + "`" + `xml:"{{.Name}},omitempty"` + "`" + `
+				{{ .Name | makeFieldPublic}} {{ .SimpleType.GoType }} ` + "`" + `xml:"{{.Name}},omitempty"` + "`" + `
 			{{else}}
 				{{template "ComplexTypeInline" .}}
 			{{end}}

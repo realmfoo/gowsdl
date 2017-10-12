@@ -56,6 +56,9 @@
         </s:sequence>
         <s:attribute ref="tns:responseCode"/>
       </s:complexType>
+      <s:simpleType name="valueList">
+        <s:list itemType="s:integer"/>
+      </s:simpleType>
       <s:attribute name="responseCode">
         <s:simpleType>
           <s:restriction base="s:string">

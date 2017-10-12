@@ -45,6 +45,11 @@ func (t *traverser) traverseElement(elm *XSDElement) {
 }
 
 func (t *traverser) traverseSimpleType(st *XSDSimpleType) {
+	if st.Restriction != nil {
+		st.GoType = toGoType(st.Restriction.Base)
+	} else if st.List != nil {
+		st.GoType = "[]" + toGoType(st.List.ItemType)
+	}
 }
 
 func (t *traverser) traverseComplexType(ct *XSDComplexType) {
